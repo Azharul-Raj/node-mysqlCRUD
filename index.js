@@ -28,7 +28,9 @@ db.connect(function(err) {
     console.log("Connected to the database!");
   });
   
-  // Create users table
+  
+  /* Once table got created you can remove the code and do the following operation below*/
+  /* Table and procedure created below*/
   db.query(
     "CREATE TABLE users (ID INT NOT NULL AUTO_INCREMENT, email VARCHAR(255) CHARACTER SET 'utf8mb4' NOT NULL, password VARCHAR(255) CHARACTER SET 'utf8mb4' NOT NULL, type VARCHAR(255) CHARACTER SET 'utf8mb4' NOT NULL, active TINYINT default 1, PRIMARY KEY (ID))",
     function(err, result) {
@@ -51,6 +53,7 @@ db.connect(function(err) {
     if (err) throw err;
     console.log("New user inserted!");
   });
+
 /* .......................................................*/
 app.get("/users", (req, res) => {
     const q = "SELECT * FROM user.users";
