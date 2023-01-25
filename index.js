@@ -21,7 +21,37 @@ const db = mysql2.createConnection({
     password:"araj",
     database:"user"
 })
+// procedure 
 
+db.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected to the database!");
+  });
+  
+  // Create users table
+  db.query(
+    "CREATE TABLE users (ID INT NOT NULL AUTO_INCREMENT, email VARCHAR(255) CHARACTER SET 'utf8mb4' NOT NULL, password VARCHAR(255) CHARACTER SET 'utf8mb4' NOT NULL, type VARCHAR(255) CHARACTER SET 'utf8mb4' NOT NULL, active TINYINT default 1, PRIMARY KEY (ID))",
+    function(err, result) {
+      if (err) throw err;
+      console.log("Users table created!");
+    }
+  );
+  
+  // Create addUser stored procedure
+  db.query(
+    "CREATE PROCEDURE addUser (IN email VARCHAR(255), IN password VARCHAR(255), IN type VARCHAR(255)) BEGIN INSERT INTO users (email, password, type) VALUES (email, password, type); END",
+    function(err, result) {
+      if (err) throw err;
+      console.log("addUser stored procedure created!");
+    }
+  );
+  
+  // Call addUser stored procedure to insert new user
+  db.query("CALL addUser('email@example.com', 'password', 'admin')", function(err, result) {
+    if (err) throw err;
+    console.log("New user inserted!");
+  });
+/* .......................................................*/
 app.get("/users", (req, res) => {
     const q = "SELECT * FROM user.users";
     db.query(q, (err, data) => {
