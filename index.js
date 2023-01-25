@@ -4,7 +4,7 @@ import mysql2 from 'mysql2';
 
 const app = express();
 app.use(cors());
-app.use(express.json())
+app.use(express.json());
 const port = process.env.PORT || 3001
 
 app.listen(port, () => {
@@ -44,6 +44,17 @@ app.post('/add_user', async(req, res) => {
     db.query(q, [values], (err, data) => {
         if (err) res.send(err);
         return res.json("Data inserted successfully")
+    })
+})
+// update user method
+app.put("/user_update/:id", (req, res) => {
+    const { id } = req.params;
+    const { email, password, type, active } = req.body;
+    const q = "UPDATE users SET `email` = ?,`password` = ?,`type` = ?,`active` = ? WHERE id = ?";
+    const values=[email,password,type,active]
+    db.query(q, [...values, id], (err, data) => {
+        if (err) res.send(err);
+        res.send(data);
     })
 })
 
