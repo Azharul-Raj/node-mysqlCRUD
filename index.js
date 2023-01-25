@@ -30,7 +30,7 @@ app.get("/users", (req, res) => {
     })
 });
 
-app.post('/add_user', (req, res) => {
+app.post('/add_user', async(req, res) => {
     // console.log(req.body);
     const q = "INSERT INTO users (`email`,`password`,`type`,`active`) VALUES (?)"
     const { email, password, type, active } = req.body;
@@ -44,5 +44,16 @@ app.post('/add_user', (req, res) => {
     db.query(q, [values], (err, data) => {
         if (err) res.send(err);
         return res.json("Data inserted successfully")
+    })
+})
+
+// delete a user
+app.delete('/user/:id', (req, res) => {
+    const { id } = req.params;
+    const q = "DELETE FROM users WHERE id = ?"
+    
+    db.query(q, [id], (err, data) => {
+        if (err) res.send(err);
+        res.json(`DELETED THE USER WITH ID ${id}`)
     })
 })
